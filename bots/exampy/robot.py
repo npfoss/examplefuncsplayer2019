@@ -22,8 +22,8 @@ class MyRobot(BCAbstractRobot):
             attackable = []
             for r in visible:
                 # x = 5
-                # if not self.is_visible(r):
-                if 'x' not in r: #not visible. hacky. do not use at home
+                if not self.is_visible(r):
+                    # this robot isn't actually in our vision range, it just turned up because we heard its radio broadcast. disregard.
                     continue
                 # now all in vision range, can see x, y etc
                 dist = (r['x'] - self.me['x'])**2 + (r['y'] - self.me['y'])**2
