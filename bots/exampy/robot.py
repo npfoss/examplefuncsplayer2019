@@ -42,9 +42,14 @@ class MyRobot(BCAbstractRobot):
             my_coord = (self.me['x'], self.me['y'])
             if not self.destination:
                 self.destination = nav.reflect(self.map, my_coord, self.me['id'] % 2)
-            movement = nav.calculate_dir(my_coord, self.destination, as_coord=True)
-            self.log('TRYING TO MOVE IN DIRECTION ' + str(self.destination))
-            return self.move(*movement)
+            goal_dir = nav.calculate_dir(my_coord, self.destination, False)
+            if goal_dir is "C":
+                return
+            self.log("MOVING FROM " + str(my_coord) + " TO " + str(nav.dir_to_coord[goal_dir]))
+            while not nav.is_passable(self.map, my_coord, nav.dir_to_coord[goal_dir], self.get_visible_robot_map()):
+                self.log("TURNING FROM " + goal_dir)
+                goal_dir = nav.rotate(goal_dir, 1, True, True)
+            return self.move(*nav.dir_to_coord[goal_dir])
 
         elif self.me['unit'] == SPECS['CASTLE']:
             if self.me['turn'] < 10:
