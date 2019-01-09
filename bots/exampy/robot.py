@@ -27,7 +27,7 @@ class MyRobot(BCAbstractRobot):
                     continue
                 # now all in vision range, can see x, y etc
                 dist = (r['x'] - self.me['x'])**2 + (r['y'] - self.me['y'])**2
-                if r['team'] != self.me['team'] and SPECS['UNITS'][SPECS["CRUSADER"]]['ATTACK_RADIUS'][0] <= dist and SPECS['UNITS'][SPECS["CRUSADER"]]['ATTACK_RADIUS'][1] >= dist:
+                if r['team'] != self.me['team'] and SPECS['UNITS'][SPECS["CRUSADER"]]['ATTACK_RADIUS'][0] <= dist <= SPECS['UNITS'][SPECS["CRUSADER"]]['ATTACK_RADIUS'][1]:
                     attackable.append(r)
 
             if attackable:
