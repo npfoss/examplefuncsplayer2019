@@ -71,3 +71,7 @@ def is_passable(full_map, loc, coord_dir, robot_map):
     if robot_map[new_point[1]][new_point[0]] > 0:
         return False
     return True
+
+def apply_dir(loc, dir):
+    coord_dir = dir_to_coord[dir]
+    return (loc[0] + coord_dir[0], loc[1] + coord_dir[1])

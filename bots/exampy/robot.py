@@ -13,6 +13,7 @@ __pragma__('opov')
 class MyRobot(BCAbstractRobot):
 
     destination = None
+    already_been = {}
 
     def turn(self):
         if self.me['unit'] == SPECS['CRUSADER']:
@@ -40,13 +41,14 @@ class MyRobot(BCAbstractRobot):
 
             # The directions: North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest
             my_coord = (self.me['x'], self.me['y'])
+            self.already_been[my_coord] = True
             if not self.destination:
                 self.destination = nav.reflect(self.map, my_coord, self.me['id'] % 2)
             goal_dir = nav.calculate_dir(my_coord, self.destination, False)
             if goal_dir is "C":
                 return
             self.log("MOVING FROM " + str(my_coord) + " TO " + str(nav.dir_to_coord[goal_dir]))
-            while not nav.is_passable(self.map, my_coord, nav.dir_to_coord[goal_dir], self.get_visible_robot_map()):
+            while not nav.is_passable(self.map, my_coord, nav.dir_to_coord[goal_dir], self.get_visible_robot_map()) and nav.apply_dir(my_coord, goal_dir) in self.already_been:
                 self.log("TURNING FROM " + goal_dir)
                 goal_dir = nav.rotate(goal_dir, 1, True, True)
             return self.move(*nav.dir_to_coord[goal_dir])
