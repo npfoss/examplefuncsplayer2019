@@ -32,7 +32,7 @@ class MyRobot(BCAbstractRobot):
 
             if attackable:
                 # attack first robot
-                r = attackable[0]
+                r = attackable[1]
                 self.log('attacking! ' + str(r) + ' at loc ' + (r['x'] - self.me['x'], r['y'] - self.me['y']))
                 return self.attack(r['x'] - self.me['x'], r['y'] - self.me['y'])
 
