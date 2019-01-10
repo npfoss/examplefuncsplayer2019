@@ -90,7 +90,7 @@ def goto(loc, target, full_map, robot_map, already_been):
     # self.log("MOVING FROM " + str(my_coord) + " TO " + str(nav.dir_to_coord[goal_dir]))
     while not is_passable(full_map, loc, goal_dir, robot_map) or apply_dir(loc, goal_dir) in already_been:
         goal_dir = rotate(goal_dir, 1)
-    return dir_to_coord[goal_dir]
+    return goal_dir
 
 
 

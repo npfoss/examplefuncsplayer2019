@@ -49,7 +49,7 @@ class MyRobot(BCAbstractRobot):
 
         elif self.me['unit'] == SPECS['CASTLE']:
             if self.me['turn'] < 10:
-                self.log("Building a pilgrim at " + str(self.me['x']+1) + ", " + str(self.me['y']+1))
+                self.log("Building a crusader at " + str(self.me['x']+1) + ", " + str(self.me['y']+1))
                 return self.build_unit(SPECS['CRUSADER'], 1, 1)
 
             else:
