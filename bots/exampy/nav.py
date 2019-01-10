@@ -23,7 +23,7 @@ dir_to_coord = {
     "SW": (-1, 1),   
 }
 
-def calculate_dir(start, target, as_coord):
+def calculate_dir(start, target):
     """
     Calculate the direction in which to go to get from start to target.
     start: a tuple representing an (x,y) point
@@ -42,15 +42,23 @@ def calculate_dir(start, target, as_coord):
     elif dy > 0: 
         dy = 1
     
-    return (dx, dy) if as_coord else coord_to_dir[(dx, dy)]
+    return (dx, dy)
 
-rotate_cw = ["S", "SE", "E", "NE", "N", "NW", "W", "SW"]
-rotate_ccw = ["S", "SW", "W", "NW", "N", "NE", "E", "SE"]
+rotate_arr = [    
+    (0,0),
+    (0,1),
+    (1,1),
+    (1,0),
+    (1,-1),
+    (0,-1),
+    (-1, -1),
+    (-1, 0),
+    (-1, 1)
+]
 
-def rotate(orig_dir, amount, cw, as_dir):
-    rotate_arr = rotate_cw if cw else rotate_ccw
+def rotate(orig_dir, amount):
     direction = rotate_arr[(rotate_arr.index(orig_dir) + amount) % 8]
-    return direction if as_dir else dir_to_coord[direction]
+    return direction
 
 def reflect(full_map, loc, horizontal=True):
     v_reflec = (len(full_map[0]) - loc[0], loc[1])
@@ -73,5 +81,32 @@ def is_passable(full_map, loc, coord_dir, robot_map):
     return True
 
 def apply_dir(loc, dir):
-    coord_dir = dir_to_coord[dir]
-    return (loc[0] + coord_dir[0], loc[1] + coord_dir[1])
+    return (loc[0] + dir[0], loc[1] + dir[1])
+
+def goto(loc, target, full_map, robot_map, already_been):
+    goal_dir = calculate_dir(loc, target)
+    if goal_dir is (0,0):
+        return (0,0)
+    # self.log("MOVING FROM " + str(my_coord) + " TO " + str(nav.dir_to_coord[goal_dir]))
+    while not is_passable(full_map, loc, goal_dir, robot_map) or apply_dir(loc, goal_dir) in already_been:
+        goal_dir = rotate(goal_dir, 1)
+    return dir_to_coord[goal_dir]
+
+
+
+def get_closest_karbonite(loc, karb_map):
+    closest_karb = (-100, -100)
+    karb_dist_sq = 100000
+    for x in range(len(karb_map)):
+        if abs(x - loc[0]) > karb_dist_sq:
+            break
+        for y in range(len(karb_map)):
+            if abs(y - loc[1]) > karb_dist_sq:
+                break
+            if karb_map[y][x] and sq_dist((x,y), loc) < karb_dist_sq:
+                karb_dist_sq = sq_dist((x,y), loc)
+                closest_karb = (x,y)
+    return closest_karb
+
+def sq_dist(p1, p2):
+    return (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2

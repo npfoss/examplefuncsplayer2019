@@ -12,8 +12,9 @@ __pragma__('opov')
 # don't try to use global variables!!
 class MyRobot(BCAbstractRobot):
 
-    destination = None
     already_been = {}
+    base = None
+    destination = None
 
     def turn(self):
         if self.me['unit'] == SPECS['CRUSADER']:
@@ -44,18 +45,11 @@ class MyRobot(BCAbstractRobot):
             self.already_been[my_coord] = True
             if not self.destination:
                 self.destination = nav.reflect(self.map, my_coord, self.me['id'] % 2)
-            goal_dir = nav.calculate_dir(my_coord, self.destination, False)
-            if goal_dir is "C":
-                return
-            self.log("MOVING FROM " + str(my_coord) + " TO " + str(nav.dir_to_coord[goal_dir]))
-            while not nav.is_passable(self.map, my_coord, nav.dir_to_coord[goal_dir], self.get_visible_robot_map()) and nav.apply_dir(my_coord, goal_dir) in self.already_been:
-                self.log("TURNING FROM " + goal_dir)
-                goal_dir = nav.rotate(goal_dir, 1, True, True)
-            return self.move(*nav.dir_to_coord[goal_dir])
+            return self.move(*nav.goto(my_coord, self.destination, self.map, self.get_visible_robot_map(), self.already_been))
 
         elif self.me['unit'] == SPECS['CASTLE']:
             if self.me['turn'] < 10:
-                self.log("Building a crusader at " + str(self.me['x']+1) + ", " + str(self.me['y']+1))
+                self.log("Building a pilgrim at " + str(self.me['x']+1) + ", " + str(self.me['y']+1))
                 return self.build_unit(SPECS['CRUSADER'], 1, 1)
 
             else:
