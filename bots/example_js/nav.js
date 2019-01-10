@@ -104,5 +104,5 @@ const sqDist = (start, end) => {
     return Math.pow(start.x - end.x, 2) + Math.pow(start.y - end.y, 2);
 }
 
-export default {reflect, getDir, rotate, toCoordinateDir, toCompassDir};
+export default {reflect, getDir, rotate, toCoordinateDir, toCompassDir, goto, sqDist};
 
