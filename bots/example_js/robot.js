@@ -14,10 +14,11 @@ class MyRobot extends BCAbstractRobot {
             var visible = this.getVisibleRobots()
             
             // this sucks I'm sorry...
+            // This is actually fine. Or use .bind()
             var self = this // 'this' fails to properly identify MyRobot when used inside of anonymous function below :(
 
             // get attackable robots
-            var attackable = visible.filter(function(r){
+            var attackable = visible.filter((r) => {
                 if (! self.isVisible(r)){
                     return false
                 }
