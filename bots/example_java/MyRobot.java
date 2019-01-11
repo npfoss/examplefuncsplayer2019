@@ -1,4 +1,5 @@
 package bc19;
+import java.awt.Point;
 
 public class MyRobot extends BCAbstractRobot {
 	public int turn;

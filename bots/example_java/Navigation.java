@@ -1,32 +1,29 @@
 package bc19;
+import java.awt.Point;
 
-public static class Navigation {
-    String[][] COMPASS = [
-        ["NW", "N", "NE"],
-        ["W", "C", "E"],
-        ["SE", "S", "SE"],
-    ];
+public class Navigation {
+    String[][] COMPASS = {{"NW", "N", "NE"},{"W", "C", "E"},{"SE", "S", "SE"}};
 
-    String[] ROTATION_ARRAY = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+    String[] ROTATION_ARRAY = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
 
     Point compassToPoint(String dir) {
         switch(dir) {
             case "N":
-                return (0, -1);
+                return new Point(0, -1);
             case "NE":
-                return (1, -1);
+                return new Point(1, -1);
             case "NW":
-                return (-1, -1);
+                return new Point(-1, -1);
             case "E":
-                return (1, 0);
+                return new Point(1, 0);
             case "W":
-                return (-1, 0);
+                return new Point(-1, 0);
             case "SE":
-                return (1, 1);
+                return new Point(1, 1);
             case "SW":
-                return (-1, 1);
+                return new Point(-1, 1);
             default:
-                return 0;
+                return new Point(0,0);
         }
     }
 
@@ -74,9 +71,15 @@ public static class Navigation {
         int mapLength = fullMap.length;
         int x = loc.x;
         int y = loc.y;
-        if (x < 0 || x >= mapLength) return false;
-        if (y < 0 || y >= mapLength) return false;
-        if (fullMap[y][x] || robotMap[y][x] > 0) return false;
+        if (x < 0 || x >= mapLength) {
+            return false;
+        }
+        if (y < 0 || y >= mapLength) {
+            return false;
+        }
+        if (fullMap[y][x] || robotMap[y][x] > 0) {
+            return false;
+        }
         return true;
     }
 
