@@ -29,7 +29,7 @@ public class MyRobot extends BCAbstractRobot {
 				destination = Navigation.reflect(myLocation, getPassableMap(), me.id % 2 == 0);
 			}
 
-			Point movementDirection = Navigation.goto(myLocation, destination, getPassableMap(), getVisibleRobotMap());
+			Point movementDirection = Navigation.goTo(myLocation, destination, getPassableMap(), getVisibleRobotMap());
 			return move(movementDirection.x, movementDirection.y);
     	}
 

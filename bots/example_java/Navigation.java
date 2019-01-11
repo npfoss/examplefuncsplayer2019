@@ -1,12 +1,25 @@
 package bc19;
 import java.awt.Point;
+import java.util.*;
+
 
 public class Navigation {
-    String[][] COMPASS = {{"NW", "N", "NE"},{"W", "C", "E"},{"SE", "S", "SE"}};
+    public static final String[][] COMPASS = {{"NW", "N", "NE"},{"W", "C", "E"},{"SE", "S", "SE"}};
+    public static final String[] ROTATION_ARRAY = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
 
-    String[] ROTATION_ARRAY = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
+    public static Point goTo(Point start, Point target, boolean[][] fullMap, int[][] robotMap) {
+        Point direction = calculateDirection(start, target);
+        if (direction.x == 0 && direction.y == 0) {
+            return direction;
+        }
+        while(!isPassable(new Point(start.x + direction.x, start.y + direction.y), fullMap, robotMap)) {
+            direction = rotate(direction, 1);
+        }
 
-    Point compassToPoint(String dir) {
+        return direction;
+    }
+
+    static Point compassToPoint(String dir) {
         switch(dir) {
             case "N":
                 return new Point(0, -1);
@@ -27,17 +40,18 @@ public class Navigation {
         }
     }
 
-    String pointToCompass(Point dir) {
+    static String pointToCompass(Point dir) {
         return COMPASS[(int)(dir.y + 1)][(int)(dir.x + 1)];
     }
 
-    public Point rotate(Point dir, int amount) {
+    public static Point rotate(Point dir, int amount) {
         String compassDir = pointToCompass(dir);
-        String rotateCompassDir = ROTATION_ARRAY[(ROTATION_ARRAY.indexof(compassDir) + amount + 8) % 8];
+        List<String> rotationList = Arrays.asList(ROTATION_ARRAY);
+        String rotateCompassDir = rotationList.get((rotationList.indexOf(compassDir) + amount + 8) % 8);
         return compassToPoint(rotateCompassDir);
     }
 
-    public Point reflect(Point loc, boolean[][] fullMap, boolean isHorizontalReflection) {
+    public static Point reflect(Point loc, boolean[][] fullMap, boolean isHorizontalReflection) {
         Point hReflect = new Point(loc.x, fullMap.length - loc.y);
         Point vReflect = new Point(fullMap.length - loc.x, loc.y);
 
@@ -48,7 +62,7 @@ public class Navigation {
         }
     }
 
-    public Point calculateDirection(Point start, Point target) {
+    public static Point calculateDirection(Point start, Point target) {
         int dX = target.x - start.x;
         int dY = target.y - start.y;
 
@@ -64,10 +78,10 @@ public class Navigation {
             dY = 1;
         }
 
-        return Point(dX, dY);
+        return new Point(dX, dY);
     }
 
-    public boolean isPassable(Point loc, boolean[][] fullMap, int[][] robotMap) {
+    public static boolean isPassable(Point loc, boolean[][] fullMap, int[][] robotMap) {
         int mapLength = fullMap.length;
         int x = loc.x;
         int y = loc.y;
@@ -81,17 +95,5 @@ public class Navigation {
             return false;
         }
         return true;
-    }
-
-    public Point goto(Point start, Point target, boolean[][] fullMap, int[][] robotMap) {
-        Point direction = calculateDirection(start, target);
-        if (direction.x == 0 && direction.y == 0) {
-            return direction;
-        }
-        while(!isPassable(start.translate(direction.x, direction.y), fullMap, robotMap)) {
-            direction = rotate(direction, 1);
-        }
-
-        return direction;
     }
 }
