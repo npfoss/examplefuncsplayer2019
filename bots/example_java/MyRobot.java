@@ -2,6 +2,7 @@ package bc19;
 
 public class MyRobot extends BCAbstractRobot {
 	public int turn;
+	public Point destination;
 
     public Action turn() {
     	turn++;
@@ -11,6 +12,24 @@ public class MyRobot extends BCAbstractRobot {
     			log("Building a pilgrim.");
     			return buildUnit(SPECS.PILGRIM,1,0);
     		}
+
+			Robot[] visibleRobots = getVisibleRobots();
+			for(Robot r: visibleRobots) {
+				if (r.team != me.team) {
+					int diffX = r.x - me.x;
+					int diffY = r.y - me.y;
+					return attack(diffX, diffY);
+				}
+			}
+
+			Point myLocation = new Point(me.x, me.y);
+
+			if (destination == null) {
+				destination = Navigation.reflect(myLocation, getPassableMap(), me.id % 2 == 0);
+			}
+
+			Point movementDirection = Navigation.goto(myLocation, destination, getPassableMap(), getVisibleRobotMap());
+			return move(movementDirection.x, movementDirection.y);
     	}
 
     	if (me.unit == SPECS.PILGRIM) {
