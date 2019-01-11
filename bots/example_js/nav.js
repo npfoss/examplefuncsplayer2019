@@ -39,7 +39,7 @@ nav.toCoordinateDir = (dir) => {
 
 nav.rotate = (dir, amount) => {
     const compassDir = nav.toCompassDir(dir);
-    const rotateCompassDir = nav.rotateArr[(nav.rotateArrInd[compassDir] + amount + 8) % 8];
+    const rotateCompassDir = nav.rotateArr[(nav.rotateArrInd[compassDir] + amount) % 8];
     return nav.toCoordinateDir(rotateCompassDir);
 };
 
@@ -105,9 +105,9 @@ nav.applyDir = (loc, dir) => {
 
 nav.goto = (loc, destination, fullMap, robotMap) => {
     let goalDir = nav.getDir(loc, destination);
-    // if (!nav.isPassable(nav.applyDir(loc, goalDir), fullMap, robotMap)) {
-    //     goalDir = nav.rotate(goalDir, 1);
-    // }
+    if (!nav.isPassable(nav.applyDir(loc, goalDir), fullMap, robotMap)) {
+        goalDir = nav.rotate(goalDir, 1);
+    }
     return goalDir;
 };
 
