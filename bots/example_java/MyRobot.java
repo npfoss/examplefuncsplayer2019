@@ -1,8 +1,6 @@
 package bc19;
 
 public class MyRobot extends BCAbstractRobot {
-	public int turn;
-	public Point destination;
 
     public Action turn() {
     	turn++;
@@ -41,7 +39,7 @@ public class MyRobot extends BCAbstractRobot {
 			return move(movementDirection.x, movementDirection.y); 
     	}
 
-    	return null;
+//     	return null;
 
 	}
 }
