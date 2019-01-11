@@ -10,12 +10,12 @@ nav.rotateArr = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 nav.rotateArrInd = {
     'N': 0,
     'NE': 1,
-    'NW': 7,
-    'E': 2,
-    'W': 6,
-    'S': 4,
+    'E': 2,    
     'SE': 3,
+    'S': 4,
     'SW': 5,
+    'W': 6,
+    'NW': 7,
 };
 
 nav.compassToCoordinate = {
@@ -105,8 +105,13 @@ nav.applyDir = (loc, dir) => {
 
 nav.goto = (loc, destination, fullMap, robotMap) => {
     let goalDir = nav.getDir(loc, destination);
-    if (!nav.isPassable(nav.applyDir(loc, goalDir), fullMap, robotMap)) {
+    if (goalDir.x === 0 && goalDir.y === 0) {
+        return goalDir;
+    }
+    let tryDir = 0;
+    while (!nav.isPassable(nav.applyDir(loc, goalDir), fullMap, robotMap) && tryDir < 8) {
         goalDir = nav.rotate(goalDir, 1);
+        tryDir++;
     }
     return goalDir;
 };
