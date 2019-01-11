@@ -90,7 +90,7 @@ public class Navigation {
         if (y < 0 || y >= mapLength) {
             return false;
         }
-        if (fullMap[y][x] || robotMap[y][x] > 0) {
+        if (!fullMap[y][x] || robotMap[y][x] > 0) {
             return false;
         }
         return true;
