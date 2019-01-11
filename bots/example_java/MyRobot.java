@@ -16,7 +16,7 @@ public class MyRobot extends BCAbstractRobot {
 
     	if (me.unit == SPECS.CRUSADER) {
     		if (turn == 1) {
-    			log("I am a Crusader.");
+				log("I am a Crusader.");
 			}
 
 			Robot[] visibleRobots = getVisibleRobots();
@@ -24,7 +24,10 @@ public class MyRobot extends BCAbstractRobot {
 				if (r.team != me.team) {
 					int diffX = r.x - me.x;
 					int diffY = r.y - me.y;
-					return attack(diffX, diffY);
+					int dist = diffX * diffX + diffY * diffY;
+					if (dist >= SPECS.UNITS[SPECS.CRUSADER].ATTACK_RADIUS[0] && dist <= SPECS.UNITS[SPECS.CRUSADER].ATTACK_RADIUS[1]) {
+						return attack(diffX, diffY);
+					}
 				}
 			}
 
@@ -51,7 +54,7 @@ class Point {
 		this.y = y;
 	}
 
-	int getSquaredDist(Point other) {
+	int getSquaredDistTo(Point other) {
 		int dx = x - other.x;
 		int dy = y - other.y;
 		return dx * dx + dy * dy;
