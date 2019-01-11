@@ -1,5 +1,4 @@
 package bc19;
-import java.awt.Point;
 import java.util.*;
 
 
@@ -12,7 +11,7 @@ public class Navigation {
         if (direction.x == 0 && direction.y == 0) {
             return direction;
         }
-        while(!isPassable(new Point(start.x + direction.x, start.y + direction.y), fullMap, robotMap)) {
+        while(!isPassable(start.applyDir(direction), fullMap, robotMap)) {
             direction = rotate(direction, 1);
         }
 

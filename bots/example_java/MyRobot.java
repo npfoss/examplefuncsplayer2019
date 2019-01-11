@@ -8,7 +8,7 @@ public class MyRobot extends BCAbstractRobot {
     	turn++;
 
     	if (me.unit == SPECS.CASTLE) {
-    		if (turn == 1) {
+    		if (turn < 3) {
     			log("Building a Crusader.");
     			return buildUnit(SPECS.CRUSADER,1,0);
     		}
@@ -30,12 +30,12 @@ public class MyRobot extends BCAbstractRobot {
 
 			Point myLocation = new Point(me.x, me.y);
 
-			// if (destination == null) {
-			// 	destination = Navigation.reflect(myLocation, getPassableMap(), me.id % 2 == 0);
-			// }
+			if (destination == null) {
+				destination = Navigation.reflect(myLocation, getPassableMap(), me.id % 2 == 0);
+			}
 
-			// Point movementDirection = Navigation.goTo(myLocation, destination, getPassableMap(), getVisibleRobotMap());
-			// return move(movementDirection.x, movementDirection.y); 
+			Point movementDirection = Navigation.goTo(myLocation, destination, getPassableMap(), getVisibleRobotMap());
+			return move(movementDirection.x, movementDirection.y); 
     	}
 
     	return null;
@@ -55,5 +55,9 @@ class Point {
 		int dx = x - other.x;
 		int dy = y - other.y;
 		return dx * dx + dy * dy;
+	}
+
+	Point applyDir(Point dir) {
+		return new Point(x + dir.x, y + dir.y);
 	}
 }
