@@ -3,6 +3,7 @@ import nav from './nav.js';
 
 let step = -1;
 
+// eslint-disable-next-line no-unused-vars
 class MyRobot extends BCAbstractRobot {
     turn() {
         step++;

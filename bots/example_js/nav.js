@@ -105,7 +105,7 @@ nav.applyDir = (loc, dir) => {
 
 nav.goto = (loc, destination, fullMap, robotMap) => {
     let goalDir = nav.getDir(loc, destination);
-    // while (!nav.isPassable(nav.applyDir(loc, goalDir), fullMap, robotMap)) {
+    // if (!nav.isPassable(nav.applyDir(loc, goalDir), fullMap, robotMap)) {
     //     goalDir = nav.rotate(goalDir, 1);
     // }
     return goalDir;
