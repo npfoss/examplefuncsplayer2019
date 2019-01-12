@@ -1,5 +1,4 @@
 module.exports = {
-    "extends": "eslint:all",
     "env": {
         "browser": true,
         "es6": true
@@ -10,6 +9,10 @@ module.exports = {
         "sourceType": "module",
     },
     "rules": {
+        "eqeqeq": [
+            "error",
+            "always",
+        ],
         "indent": [
             "error",
             4
@@ -25,10 +28,6 @@ module.exports = {
         "semi": [
             "error",
             "always"
-        ],
-        "eqeqeq": [
-            "error",
-            "always",
         ]
     }
 };
