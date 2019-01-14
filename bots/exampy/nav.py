@@ -75,9 +75,9 @@ def reflect(full_map, loc, horizontal=True):
 
 def is_passable(full_map, loc, coord_dir, robot_map=None):
     new_point = (loc[0] + coord_dir[0], loc[1] + coord_dir[1])
-    if new_point[0] < 0 or new_point[0] > len(full_map):
+    if new_point[0] < 0 or new_point[0] >= len(full_map):
         return False
-    if new_point[1] < 0 or new_point[1] > len(full_map):
+    if new_point[1] < 0 or new_point[1] >= len(full_map):
         return False
     if not full_map[new_point[1]][new_point[0]]:
         return False
