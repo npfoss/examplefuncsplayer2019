@@ -91,9 +91,9 @@ class MyRobot extends BCAbstractRobot {
 
             // If we're near our destination, do the thing
             if (this.me.karbonite === 20) {
+                this.destination = this.castle;
                 if (nav.sqDist(this.me, this.destination) <= 2) {
                     this.destination = nav.getClosestKarbonite(this.me, this.getKarboniteMap());
-                    this.log('GIVING!');
                     return this.give(
                         this.castle.x - this.me.x,
                         this.castle.y - this.me.y,
@@ -102,12 +102,7 @@ class MyRobot extends BCAbstractRobot {
                 }
             } else {
                 if (nav.sqDist(this.me, this.destination) === 0) {
-                    if (this.me.karbonite === 20) {
-                        this.log('FINISHED MINING!');
-                        this.destination = this.castle;
-                    } else {
-                        return this.mine();
-                    }
+                    return this.mine();
                 }
             }
             // If we have nothing else to do, move to our destination.
