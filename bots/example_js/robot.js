@@ -62,14 +62,13 @@ class MyRobot extends BCAbstractRobot {
                 this.log('attacking! ' + r + ' at loc ' + (r.x - this.me.x, r.y - this.me.y));
                 return this.attack(r.x - this.me.x, r.y - this.me.y);
             }
-            const { x, y } = this.me;
             // this.log("Crusader health: " + this.me.health);'
             if (!this.destination) {
-                this.destination = nav.reflect({x,y}, this.getPassableMap(), this.me.id % 2 === 0);
+                this.destination = nav.reflect(this.me, this.getPassableMap(), this.me.id % 2 === 0);
             }
 
             const choice = nav.goto(
-                {x,y}, 
+                this.me, 
                 this.destination,
                 this.map, 
                 this.getPassableMap(), 
