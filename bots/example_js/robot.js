@@ -14,9 +14,9 @@ class MyRobot extends BCAbstractRobot {
     turn() {
         step++;
 
-        if (this.me.unit === SPECS.CRUSADER) {
+        if (this.me.unit === SPECS.CRUSADER || this.me.unit === SPECS.PROPHET || this.me.unit === SPECS.PREACHER) {
             this.log('START TURN ' + step);
-            this.log('Crusader health: ' + this.me.health);
+            this.log('health: ' + this.me.health);
 
             var visible = this.getVisibleRobots();
             
@@ -31,8 +31,8 @@ class MyRobot extends BCAbstractRobot {
                 }
                 const dist = (r.x-self.me.x)**2 + (r.y-self.me.y)**2;
                 if (r.team !== self.me.team
-                    && SPECS.UNITS[SPECS.CRUSADER].ATTACK_RADIUS[0] <= dist
-                    && dist <= SPECS.UNITS[SPECS.CRUSADER].ATTACK_RADIUS[1] ){
+                    && SPECS.UNITS[this.me.unit].ATTACK_RADIUS[0] <= dist
+                    && dist <= SPECS.UNITS[this.me.unit].ATTACK_RADIUS[1] ){
                     return true;
                 }
                 return false;
@@ -74,9 +74,7 @@ class MyRobot extends BCAbstractRobot {
                 this.getPassableMap(), 
                 this.getVisibleRobotMap());
             return this.move(choice.x, choice.y);
-        }
-
-        else if (this.me.unit === SPECS.PILGRIM) {
+        } else if (this.me.unit === SPECS.PILGRIM) {
             // On the first turn, find out our base
             if (!this.castle) {
                 this.castle = this.getVisibleRobots()
@@ -116,12 +114,6 @@ class MyRobot extends BCAbstractRobot {
         }
 
         else if (this.me.unit === SPECS.CASTLE) {
-            if (!this.hasBuiltPilgrim && this.karbonite >= 100) {
-                this.log('Building a pilgrim at ' + (this.me.x+1) + ',' + (this.me.y+1));
-                this.hasBuiltPilgrim = true;
-                return this.buildUnit(SPECS.PILGRIM, 1, 1);
-            } 
-
             const visible = this.getVisibleRobots();
             const messagingRobots = visible.filter(robot => {
                 return robot.castle_talk;
@@ -148,6 +140,32 @@ class MyRobot extends BCAbstractRobot {
                 }
             }
 
+            if (!this.hasBuiltPilgrim && this.karbonite >= 100) {
+                this.log('Building a pilgrim at ' + (this.me.x+1) + ',' + (this.me.y+1));
+                this.hasBuiltPilgrim = true;
+                return this.buildUnit(SPECS.PILGRIM, 1, 0);
+            } 
+
+            if (this.karbonite > 200) {
+                const unitEnum = Math.floor(Math.random() * 3);
+                let unit = null;
+                switch(unitEnum) {
+                case 0:
+                    unit = SPECS.CRUSADER;
+                    this.log('Building a crusader at ' + (this.me.x+1) + ',' + (this.me.y+1));
+                    break;
+                case 1:
+                    unit = SPECS.PROPHET;
+                    this.log('Building a prophet at ' + (this.me.x+1) + ',' + (this.me.y+1));
+                    break;
+                case 2:
+                    unit = SPECS.PREACHER;
+                    this.log('Building a preacher at ' + (this.me.x+1) + ',' + (this.me.y+1));
+                    break;
+                }
+                return this.buildUnit(unit, 1, 0);
+
+            }
         }
 
     }
