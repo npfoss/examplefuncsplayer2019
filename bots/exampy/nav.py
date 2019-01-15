@@ -93,13 +93,14 @@ def goto(loc, target, full_map, robot_map, already_been):
     if goal_dir is (0,0):
         return (0,0)
     # self.log("MOVING FROM " + str(my_coord) + " TO " + str(nav.dir_to_coord[goal_dir]))
+    end_dir = goal_dir
     i = 0
-    while not is_passable(full_map, loc, goal_dir, robot_map) and i < 4:# or apply_dir(loc, goal_dir) in already_been: # doesn't work because `in` doesn't work :(
+    while not is_passable(full_map, loc, end_dir, robot_map) and i < 4:# or apply_dir(loc, goal_dir) in already_been: # doesn't work because `in` doesn't work :(
         # alternate checking either side of the goal dir, by increasing amounts (but not past directly backwards)
         if i > 0:
             i = -i
         else:
             i = -i + 1
-        goal_dir = rotate(goal_dir, i)
-    return goal_dir
+        end_dir = rotate(goal_dir, i)
+    return end_dir
 
