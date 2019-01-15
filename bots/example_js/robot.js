@@ -14,7 +14,7 @@ class MyRobot extends BCAbstractRobot {
     turn() {
         step++;
 
-        if (this.me.unit === SPECS.CRUSADER || this.me.unit === SPECS.PROPHET || this.me.unit === SPECS.PREACHER) {
+        if (this.me.unit === SPECS.PROPHET) {
             this.log('START TURN ' + step);
             this.log('health: ' + this.me.health);
 
@@ -37,6 +37,30 @@ class MyRobot extends BCAbstractRobot {
                 }
                 return false;
             });
+
+            const attacking = visible.filter(r => {
+                if (r.team === this.me.team) {
+                    return false;
+                }
+
+                if (nav.sqDist(r, this.me) <= SPECS.UNITS[this.me.unit].ATTACK_RADIUS[0]) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+            if (attacking.length > 0) {
+                const attacker = attacking[0];
+                const dir = nav.getDir(this.me, attacker);
+                const otherDir = {
+                    x: -dir.x,
+                    y: -dir.y,
+                };
+                return this.move(otherDir.x, otherDir.y);
+            }
+
+
 
             if(!this.pendingMessage) {
                 for(let i = 0; i < visible.length; i++ ) {
@@ -147,23 +171,23 @@ class MyRobot extends BCAbstractRobot {
             } 
 
             if (this.karbonite > 200) {
-                const unitEnum = Math.floor(Math.random() * 3);
-                let unit = null;
-                switch(unitEnum) {
-                case 0:
-                    unit = SPECS.CRUSADER;
-                    this.log('Building a crusader at ' + (this.me.x+1) + ',' + (this.me.y+1));
-                    break;
-                case 1:
-                    unit = SPECS.PROPHET;
-                    this.log('Building a prophet at ' + (this.me.x+1) + ',' + (this.me.y+1));
-                    break;
-                case 2:
-                    unit = SPECS.PREACHER;
-                    this.log('Building a preacher at ' + (this.me.x+1) + ',' + (this.me.y+1));
-                    break;
-                }
-                return this.buildUnit(unit, 1, 0);
+                // const unitEnum = Math.floor(Math.random() * 3);
+                // let unit = null;
+                // switch(unitEnum) {
+                // case 0:
+                //     unit = SPECS.CRUSADER;
+                //     this.log('Building a crusader at ' + (this.me.x+1) + ',' + (this.me.y+1));
+                //     break;
+                // case 1:
+                //     unit = SPECS.PROPHET;
+                //     this.log('Building a prophet at ' + (this.me.x+1) + ',' + (this.me.y+1));
+                //     break;
+                // case 2:
+                //     unit = SPECS.PREACHER;
+                //     this.log('Building a preacher at ' + (this.me.x+1) + ',' + (this.me.y+1));
+                //     break;
+                // }
+                return this.buildUnit(SPECS.PROPHET, 1, 0);
 
             }
         }
