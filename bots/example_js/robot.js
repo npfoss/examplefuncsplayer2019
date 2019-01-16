@@ -23,19 +23,19 @@ class MyRobot extends BCAbstractRobot {
         if (this.myType === undefined){
             switch(this.me.unit) {
                 case SPECS.PROPHET:
-                    this.myType = prophet
+                    this.myType = prophet;
                     break;
                 case SPECS.CASTLE:
-                    this.myType = castle
+                    this.myType = castle;
                     break;
                 case SPECS.PILGRIM:
-                    this.myType = pilgrim
+                    this.myType = pilgrim;
                     break;
             }
         }
 
         this.step++;
 
-        this.myType.takeTurn(this);
+        return this.myType.takeTurn(this);
     }
 }
