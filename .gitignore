@@ -2,3 +2,5 @@
 */*.bc19
 */*/*.bc19
 .vscode/
+*/*/.eslintrc*
+*/*/package.json
