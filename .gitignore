@@ -3,3 +3,4 @@
 */*/*.bc19
 .vscode/
 */*/.eslintrc*
+*/*/package.json
