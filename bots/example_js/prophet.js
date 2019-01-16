@@ -4,7 +4,6 @@ import util from './util.js';
 
 const prophet = {};
 
-
 prophet.takeTurn = (self) => {
     self.log('prophet taking turn')
     self.log('START TURN ' + self.step);

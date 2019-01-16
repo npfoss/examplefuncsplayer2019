@@ -17,6 +17,7 @@ class MyRobot extends BCAbstractRobot {
         this.enemyCastles = [];
         this.myType = undefined;
         this.step = -1;
+        this.pilgrimsBuilt = 0;
     }
 
     turn() {

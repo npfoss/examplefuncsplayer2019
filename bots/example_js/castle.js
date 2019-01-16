@@ -32,9 +32,9 @@ castle.takeTurn = (self) => {
         }
     }
 
-    if (!self.hasBuiltPilgrim && self.karbonite >= 100) {
+    if (self.pilgrimsBuilt < 2 && self.karbonite >= 100) {
         self.log('Building a pilgrim at ' + (self.me.x+1) + ',' + (self.me.y+1));
-        self.hasBuiltPilgrim = true;
+        self.pilgrimsBuilt++;
         return self.buildUnit(SPECS.PILGRIM, 1, 0);
     } 
 
