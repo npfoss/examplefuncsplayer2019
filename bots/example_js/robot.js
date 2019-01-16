@@ -91,12 +91,7 @@ class MyRobot extends BCAbstractRobot {
                 this.destination = nav.reflect(this.me, this.getPassableMap(), this.me.id % 2 === 0);
             }
 
-            const choice = nav.goto(
-                this.me, 
-                this.destination,
-                this.map, 
-                this.getPassableMap(), 
-                this.getVisibleRobotMap());
+            const choice = nav.goto(this, this.destination);
             return this.move(choice.x, choice.y);
         } else if (this.me.unit === SPECS.PILGRIM) {
             // On the first turn, find out our base
@@ -127,12 +122,7 @@ class MyRobot extends BCAbstractRobot {
                 }
             }
             // If we have nothing else to do, move to our destination.
-            const choice = nav.goto(
-                this.me, 
-                this.destination,
-                this.map, 
-                this.getPassableMap(), 
-                this.getVisibleRobotMap());
+            const choice = nav.goto(this, this.destination);
 
             return this.move(choice.x, choice.y);
         }

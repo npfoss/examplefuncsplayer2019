@@ -103,13 +103,17 @@ nav.applyDir = (loc, dir) => {
     };
 };
 
-nav.goto = (loc, destination, fullMap, robotMap) => {
-    let goalDir = nav.getDir(loc, destination);
+nav.goto = (self, destination) => {
+    let goalDir = nav.getDir(self.me, destination);
     if (goalDir.x === 0 && goalDir.y === 0) {
         return goalDir;
     }
     let tryDir = 0;
-    while (!nav.isPassable(nav.applyDir(loc, goalDir), fullMap, robotMap) && tryDir < 8) {
+    while (!nav.isPassable(
+        nav.applyDir(self.me, goalDir), 
+        self.getPassableMap(), 
+        self.getVisibleRobotMap()
+    ) && tryDir < 8) {
         goalDir = nav.rotate(goalDir, 1);
         tryDir++;
     }
