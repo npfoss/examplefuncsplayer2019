@@ -1,5 +1,12 @@
 import {BCAbstractRobot, SPECS} from 'battlecode';
 import nav from './nav.js';
+import util from './util.js';
+import pilgrim from './pilgrim.js';
+import crusader from './crusader.js';
+import prophet from './prophet.js';
+import preacher from './preacher.js';
+import castle from './castle.js';
+import church from './church.js';
 
 let step = -1;
 
@@ -9,12 +16,27 @@ class MyRobot extends BCAbstractRobot {
         super();
         this.pendingRecievedMessages = {};
         this.enemyCastles = [];
+        this.myType = undefined;
     }
 
     turn() {
+        if (this.myType === undefined){
+            switch(this.me.unit) {
+                case SPECS.CASTLE:
+                    this.myType = castle
+                    break;
+                case SPECS.PROPHET:
+                    this.myType = prophet
+                    break;
+                case SPECS.PILGRIM:
+                    this.myType = pilgrim
+                    break;
+            }
+        }
+        
         step++;
 
-        if (this.me.unit === SPECS.PROPHET) {
+        if (this.myType === prophet) {
             this.log('START TURN ' + step);
             this.log('health: ' + this.me.health);
 
@@ -93,7 +115,7 @@ class MyRobot extends BCAbstractRobot {
 
             const choice = nav.goto(this, this.destination);
             return this.move(choice.x, choice.y);
-        } else if (this.me.unit === SPECS.PILGRIM) {
+        } else if (this.myType === pilgrim) {
             // On the first turn, find out our base
             if (!this.castle) {
                 this.castle = this.getVisibleRobots()
@@ -127,7 +149,7 @@ class MyRobot extends BCAbstractRobot {
             return this.move(choice.x, choice.y);
         }
 
-        else if (this.me.unit === SPECS.CASTLE) {
+        else if (this.myType === castle) {
             const visible = this.getVisibleRobots();
             const messagingRobots = visible.filter(robot => {
                 return robot.castle_talk;
