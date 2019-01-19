@@ -10,7 +10,7 @@ nav.rotateArr = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 nav.rotateArrInd = {
     'N': 0,
     'NE': 1,
-    'E': 2,    
+    'E': 2,
     'SE': 3,
     'S': 4,
     'SW': 5,
@@ -19,14 +19,14 @@ nav.rotateArrInd = {
 };
 
 nav.compassToCoordinate = {
-    'N': {x: 0, y: -1},
-    'NE': {x: 1, y: -1},
-    'NW': {x: -1, y: -1},
-    'E': {x: 1, y: 0},
-    'W': {x: -1, y: 0},
-    'S': {x: 0, y: 1},
-    'SE': {x: 1, y: 1},
-    'SW': {x: -1, y: 1},
+    'N': { x: 0, y: -1 },
+    'NE': { x: 1, y: -1 },
+    'NW': { x: -1, y: -1 },
+    'E': { x: 1, y: 0 },
+    'W': { x: -1, y: 0 },
+    'S': { x: 0, y: 1 },
+    'SE': { x: 1, y: 1 },
+    'SW': { x: -1, y: 1 },
 };
 
 nav.toCompassDir = (dir) => {
@@ -39,27 +39,33 @@ nav.toCoordinateDir = (dir) => {
 
 nav.rotate = (dir, amount) => {
     const compassDir = nav.toCompassDir(dir);
-    const rotateCompassDir = nav.rotateArr[(nav.rotateArrInd[compassDir] + amount) % 8];
+    const rotateCompassDir = nav.rotateArr[(nav.rotateArrInd[compassDir] + amount) % nav.rotateArr.length];  //BUG HERE: can't call length of rotateArrInd; used rotateArr instead 
     return nav.toCoordinateDir(rotateCompassDir);
 };
 
-nav.reflect = (loc, fullMap, isHorizontalReflection) => {
-    const mapLen = fullMap.length;
+nav.reflect = (loc, mapLen, isHorizontalReflection) => {
     const hReflect = {
         x: loc.x,
-        y: mapLen - loc.y,
+        y: mapLen - loc.y - 1, // SEE BELOW
     };
     const vReflect = {
-        x: mapLen - loc.y,
+        x: mapLen - loc.x - 1, // 2 BUG(_S_) HERE!!! loc.y SHOULD BE loc.x; also must subtract 1!!!!!
         y: loc.y,
-    };
-
-    if (isHorizontalReflection) {
-        return fullMap[hReflect.y][hReflect.x] ? hReflect : vReflect;
-    } else {
-        return fullMap[vReflect.y][vReflect.x] ? vReflect : hReflect;
-    }
+    };    
+    return isHorizontalReflection ? hReflect : vReflect; 
 };
+
+nav.isHoReflect = (self) => {
+    // self.log('starting reflect check');
+    const mapLen = self.map.length
+    var Plausible = true;
+    for (let y = 0; y < mapLen && Plausible; y++) {
+        for (let x = 0; x < mapLen && Plausible; x++) {
+            Plausible = self.map[y][x] === self.map[mapLen - y - 1][x]
+        }
+    }
+    return Plausible
+}
 
 nav.getDir = (start, target) => {
     const newDir = {
@@ -83,11 +89,11 @@ nav.getDir = (start, target) => {
 };
 
 nav.isPassable = (loc, fullMap, robotMap) => {
-    const {x, y} = loc;
+    const { x, y } = loc;
     const mapLen = fullMap.length;
-    if (x >= mapLen || x < 0) {
+    if (x >= mapLen - 1 || x < 0) { // BUG HERE, if x = mapLen, then it's off the map!
         return false;
-    } else if (y >= mapLen || y < 0) {
+    } else if (y >= mapLen - 1 || y < 0) { // BUG HERE, if y = mapLen, then it's off the map!
         return false;
     } else if (robotMap[y][x] > 0 || !fullMap[y][x]) {
         return false;
@@ -110,10 +116,10 @@ nav.goto = (self, destination) => {
     }
     let tryDir = 0;
     while (!nav.isPassable(
-        nav.applyDir(self.me, goalDir), 
-        self.getPassableMap(), 
+        nav.applyDir(self.me, goalDir),
+        self.getPassableMap(),
         self.getVisibleRobotMap()
-    ) && tryDir < 8) {
+    ) && tryDir < nav.rotateArr.length) {
         goalDir = nav.rotate(goalDir, 1);
         tryDir++;
     }
@@ -124,15 +130,15 @@ nav.sqDist = (start, end) => {
     return Math.pow(start.x - end.x, 2) + Math.pow(start.y - end.y, 2);
 };
 
-nav.getClosestKarbonite = (loc, karbMap) => {
-    const mapLen = karbMap.length;
+nav.getClosestRsrc = (loc, rsrcMap) => {
+    const mapLen = rsrcMap.length;
     let closestLoc = null;
     let closestDist = 100000; // Large number;
     for (let y = 0; y < mapLen; y++) {
         for (let x = 0; x < mapLen; x++) {
-            if (karbMap[y][x] && nav.sqDist({x,y}, loc) < closestDist) {
-                closestDist = nav.sqDist({x,y}, loc);
-                closestLoc = {x,y};
+            if (rsrcMap[y][x] && nav.sqDist({ x, y }, loc) < closestDist) {
+                closestDist = nav.sqDist({ x, y }, loc);
+                closestLoc = { x, y };
             }
         }
     }

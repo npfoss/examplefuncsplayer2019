@@ -18,9 +18,15 @@ class MyRobot extends BCAbstractRobot {
         this.myType = undefined;
         this.step = -1;
         this.pilgrimsBuilt = 0;
+        this.isHoReflect = true;
+        this.mapLen = -1
     }
 
     turn() {
+        if (this.me.turn === 1) {
+            this.isHoReflect = nav.isHoReflect(this);
+            this.mapLen = this.map.length;
+        }
         if (this.myType === undefined){
             switch(this.me.unit) {
                 case SPECS.PROPHET:
@@ -35,7 +41,7 @@ class MyRobot extends BCAbstractRobot {
             }
         }
 
-        this.step++;
+        // this.step++; // step isn't useful; use this.me.turn
 
         return this.myType.takeTurn(this);
     }

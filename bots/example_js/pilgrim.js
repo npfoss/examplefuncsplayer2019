@@ -19,9 +19,9 @@ pilgrim.takeTurn = (self) => {
         if (visiblebots
             .filter(robot => robot.team === self.me.team && robot.unit === SPECS.PILGRIM).length > 1){
             // can see another pilgrim on my team
-            self.resourceDestination = nav.getClosestKarbonite(self.me, self.getFuelMap());
+            self.resourceDestination = nav.getClosestRsrc(self.me, self.getFuelMap());
         } else {
-            self.resourceDestination = nav.getClosestKarbonite(self.me, self.getKarboniteMap());
+            self.resourceDestination = nav.getClosestRsrc(self.me, self.getKarboniteMap());
         }
         self.destination = self.resourceDestination;
     }
