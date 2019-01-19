@@ -91,7 +91,7 @@ nav.getDir = (start, target) => {
 nav.isPassable = (loc, fullMap, robotMap) => {
     const { x, y } = loc;
     const mapLen = fullMap.length;
-    if (x >= mapLen - 1 || x < 0) { // BUG HERE, if x = mapLen, then it's off the map!
+    if (x >= mapLen || x < 0) {
         return false;
     } else if (y >= mapLen || y < 0) {
         return false;
