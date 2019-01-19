@@ -50,7 +50,7 @@ nav.reflect = (loc, fullMap, isHorizontalReflection) => {
         y: mapLen - loc.y,
     };
     const vReflect = {
-        x: mapLen - loc.y,
+        x: mapLen - loc.x,
         y: loc.y,
     };
 
