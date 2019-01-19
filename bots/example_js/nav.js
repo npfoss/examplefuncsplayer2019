@@ -93,7 +93,7 @@ nav.isPassable = (loc, fullMap, robotMap) => {
     const mapLen = fullMap.length;
     if (x >= mapLen - 1 || x < 0) { // BUG HERE, if x = mapLen, then it's off the map!
         return false;
-    } else if (y >= mapLen - 1 || y < 0) { // BUG HERE, if y = mapLen, then it's off the map!
+    } else if (y >= mapLen || y < 0) {
         return false;
     } else if (robotMap[y][x] > 0 || !fullMap[y][x]) {
         return false;
