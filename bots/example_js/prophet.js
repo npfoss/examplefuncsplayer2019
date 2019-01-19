@@ -74,8 +74,8 @@ prophet.takeTurn = (self) => {
         return self.attack(r.x - self.me.x, r.y - self.me.y);
     }
     // self.log("Crusader health: " + self.me.health);'
-    if (!self.destination) {
-        self.destination = nav.reflect(self.me, self.getPassableMap(), self.me.id % 2 === 0);
+        if (!self.destination) {
+        self.destination = nav.reflect(self.me, self.mapLen, self.isHoReflect);
     }
 
     const choice = nav.goto(self, self.destination);
