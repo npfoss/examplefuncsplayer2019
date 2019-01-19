@@ -146,4 +146,3 @@ nav.getClosestRsrc = (loc, rsrcMap) => {
 };
 
 export default nav;
-
