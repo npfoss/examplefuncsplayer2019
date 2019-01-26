@@ -29,6 +29,19 @@ nav.compassToCoordinate = {
     'SW': { x: -1, y: 1 },
 };
 
+nav.offsetList = [
+    { x: 0, y: -1 },
+    { x: 1, y: -1 },
+    { x: -1, y: -1 },
+    { x: 1, y: 0 },
+    { x: -1, y: 0 },
+    { x: 0, y: 1 },
+    { x: 1, y: 1 },
+    { x: -1, y: 1 },
+];
+
+nav.rotateTry = [1, -1, 2, -2, 3, -3, 4];
+
 nav.toCompassDir = (dir) => {
     return nav.compass[dir.y + 1][dir.x + 1];
 };
@@ -39,7 +52,7 @@ nav.toCoordinateDir = (dir) => {
 
 nav.rotate = (dir, amount) => {
     const compassDir = nav.toCompassDir(dir);
-    const rotateCompassDir = nav.rotateArr[(nav.rotateArrInd[compassDir] + amount) % nav.rotateArr.length];  //BUG HERE: can't call length of rotateArrInd; used rotateArr instead 
+    const rotateCompassDir = nav.rotateArr[(nav.rotateArrInd[compassDir] + amount + nav.rotateArr.length) % nav.rotateArr.length];  //BUG HERE: can't call length of rotateArrInd; used rotateArr instead 
     return nav.toCoordinateDir(rotateCompassDir);
 };
 
@@ -114,16 +127,17 @@ nav.goto = (self, destination) => {
     if (goalDir.x === 0 && goalDir.y === 0) {
         return goalDir;
     }
-    let tryDir = 0;
+    let tryDir = goalDir;
+    let ind = 0;
     while (!nav.isPassable(
-        nav.applyDir(self.me, goalDir),
+        nav.applyDir(self.me, tryDir),
         self.getPassableMap(),
         self.getVisibleRobotMap()
-    ) && tryDir < nav.rotateArr.length) {
-        goalDir = nav.rotate(goalDir, 1);
-        tryDir++;
+    ) && ind < nav.rotateTry.length) {
+        tryDir = nav.rotate(goalDir, nav.rotateTry[ind]);
+        ind++;
     }
-    return goalDir;
+    return tryDir;
 };
 
 nav.sqDist = (start, end) => {

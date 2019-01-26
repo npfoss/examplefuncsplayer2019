@@ -16,7 +16,6 @@ class MyRobot extends BCAbstractRobot {
         this.pendingRecievedMessages = {};
         this.enemyCastles = [];
         this.myType = undefined;
-        this.step = -1;
         this.pilgrimsBuilt = 0;
         this.isHoReflect = true;
         this.mapLen = -1

@@ -74,7 +74,7 @@ prophet.takeTurn = (self) => {
         return self.attack(r.x - self.me.x, r.y - self.me.y);
     }
     // self.log("Crusader health: " + self.me.health);'
-        if (!self.destination) {
+    if (!self.destination) {
         self.destination = nav.reflect(self.me, self.mapLen, self.isHoReflect);
     }
 
